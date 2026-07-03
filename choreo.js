@@ -9,6 +9,17 @@
   'use strict';
 
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var LIBS_OK = !!(window.gsap && window.ScrollTrigger && window.Lenis);
+  var DESKTOP = window.matchMedia('(min-width: 760px)');
+  /* Mode is decided once per load. Crossing the breakpoint (rotation/resize)
+     or toggling reduced-motion mid-session reloads, so CSS media queries and
+     JS guards can never disagree. */
+  function reloadOnChange(mq) {
+    var fn = function () { location.reload(); };
+    if (mq.addEventListener) mq.addEventListener('change', fn); else mq.addListener(fn);
+  }
+  reloadOnChange(DESKTOP);
+  reloadOnChange(window.matchMedia('(prefers-reduced-motion: reduce)'));
   var FRAMES = 250;
   var api = { scrubber: null, lenis: null };
   window.__seveso = api;
@@ -34,8 +45,9 @@
   }
   function frameUrl(i) { return 'frames/f_' + String(i).padStart(3, '0') + '.webp'; }
 
-  /* ---------- Reduced motion: static page, real values, no scrub ---------- */
-  if (REDUCED) {
+  /* ---------- Reduced motion (or CDN failure): static page, real values,
+     no scrub — the film-static chapters carry the story instead ---------- */
+  if (REDUCED || !LIBS_OK) {
     document.body.classList.add('is-reduced');
     document.querySelectorAll('.counter__num[data-count-to]').forEach(function (el) {
       el.childNodes[0].nodeValue = el.getAttribute('data-count-to');
@@ -65,7 +77,15 @@
       var target = document.querySelector(a.getAttribute('href'));
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -64, duration: 1.2 });
+      lenis.scrollTo(target, {
+        offset: -64, duration: 1.2,
+        onComplete: function () {
+          // preventDefault suppressed native focus-move; restore it so the
+          // skip links actually skip for keyboard/screen-reader users
+          target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        }
+      });
     });
   });
 
@@ -79,19 +99,20 @@
     onFirstFrame: function () { poster.style.visibility = 'hidden'; }
   });
   api.scrubber = scrubber;
-  // On desktop the film sits smaller on its own white ground, subject right of
-  // the copy column — not a giant full-bleed background. Kept well under the
-  // frames' native size so they render sharp (no upscale = no pixelation).
-  if (window.innerWidth >= 760) { scrubber.zoom = 0.44; scrubber.shiftX = 0.24; }
   gsap.ticker.add(function () { scrubber.tick(); });
 
   /* The film itself journeys through the stage as you scroll — each story
      beat carries the subject to a new position, so the scroll experience
      lives in the animation rather than only in text swaps. Desktop only:
-     mobile stays full-bleed. */
-  if (window.innerWidth >= 760) {
-    var journey = { x: 0.24, y: 0.05, z: 0.50 };
-    var applyJourney = function () {
+     mobile stays full-bleed. On desktop the film sits smaller on its own
+     white ground, right of the copy column, well under the frames' native
+     size so they render sharp. `journey` is the ONLY writer of
+     zoom/shiftX/shiftY — the tweaks API goes through it too, so scrolling
+     can never silently revert a tweak. */
+  var journey = null, applyJourney = null;
+  if (DESKTOP.matches) {
+    journey = { x: 0.24, y: 0.05, z: 0.50 };
+    applyJourney = function () {
       scrubber.shiftX = journey.x;
       scrubber.shiftY = journey.y;
       scrubber.zoom = journey.z;
@@ -108,14 +129,14 @@
       .to(journey, { x: 0.24, y: 0.02, z: 0.44, duration: 0.22 }, 0.78); // resolve: settles right, at rest
   }
 
-  if (window.innerWidth < 760) {
+  if (!DESKTOP.matches) {
     document.documentElement.style.setProperty('--film-vh', 420);
   }
 
   var skipLink = document.querySelector('.skip-film');
   var ch4 = document.getElementById('ch4');
 
-  ScrollTrigger.create({
+  var filmST = ScrollTrigger.create({
     trigger: '#film',
     start: 'top top',
     end: 'bottom bottom',
@@ -127,7 +148,9 @@
       skipLink.classList.toggle('is-visible', self.isActive);
     }
   });
-  skipLink.classList.add('is-visible'); // visible at load (film starts at scroll 0)
+  // real state, not an unconditional add — deep links / scroll restoration
+  // can land past the film, where the link must not float over Act II/III
+  skipLink.classList.toggle('is-visible', filmST.isActive);
 
   /* Chapter choreography — one timeline, positions are fractions of the pin. */
   var tl = gsap.timeline({
@@ -146,6 +169,7 @@
   chapterIn('#ch3', 0.54, 0.05);  chapterOut('#ch3', 0.67, 0.04);
   chapterIn('#ch4', 0.76, 0.06);
   tl.fromTo('#ch4 .chapter__ctas', { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.05 }, 0.90);
+  tl.set({}, {}, 1); // pad to exactly 1.0 so positions are true fractions of the pin
 
   /* ---------- Chapter 5 · stoplicht dashboard (scrubs into view) ---------- */
   var dashTl = gsap.timeline({
@@ -282,9 +306,9 @@
   };
   api.setSmoothing = function (v) { scrubber.smoothing = v; };
   api.setFilmScale = function (pct) {
-    if (window.innerWidth < 760) return; // mobile stays full-bleed (cover crop)
-    scrubber.zoom = pct / 100;
-    scrubber.drawn = -1;
+    if (!journey) return; // mobile stays full-bleed (cover crop)
+    journey.z = pct / 100;
+    applyJourney();
   };
 
   /* ---------- Initial measurement ----------

@@ -16,7 +16,9 @@
     this.src = opts.src; // (i 1-based) -> url
     this.smoothing = opts.smoothing || 0.12;
     this.imgs = new Array(this.count).fill(null);
-    this.state = new Array(this.count).fill(0); // 0 idle · 1 loading · 2 ready
+    this.state = new Array(this.count).fill(0); // 0 idle · 1 loading · 2 ready · 3 failed
+    this.tries = new Array(this.count).fill(0);
+    this._last = null;
     this.queue = [];
     this.inflight = 0;
     this.maxInflight = 6;
@@ -65,12 +67,17 @@
       if (ok) {
         self.imgs[i] = img;
         self.state[i] = 2;
+        // pre-decode off the critical path so the first drawImage of this
+        // frame doesn't pay a synchronous decode mid-scroll
+        if (img.decode) img.decode().catch(function () {});
         if (i === 0 && self.onFirstFrame) { self.onFirstFrame(); self.onFirstFrame = null; }
         // repaint if the playhead is waiting on (or near) this frame
         if (Math.abs(i - Math.round(self.cur)) <= 8) self.drawn = -1;
+      } else if (++self.tries[i] < 3) {
+        self.state[i] = 0; // retry with backoff, never a hot loop
+        setTimeout(function () { self.queue.push(i); self._pump(); }, 800 * self.tries[i]);
       } else {
-        self.state[i] = 0; // retry later
-        self.queue.push(i);
+        self.state[i] = 3; // gave up — nearestReady skips it
       }
       self._pump();
     };
@@ -114,7 +121,11 @@
   // Call every rAF tick. Returns current eased progress (0..1 across frames).
   FrameScrubber.prototype.tick = function () {
     if (this.canvas.width === 0 || this.canvas.height === 0) this.resize();
-    this.cur += (this.target - this.cur) * this.smoothing;
+    // time-corrected lerp: same glide speed on 60Hz and 120/144Hz displays
+    var now = (window.performance || Date).now();
+    var dt = this._last === null ? 1 / 60 : Math.min(0.1, (now - this._last) / 1000);
+    this._last = now;
+    this.cur += (this.target - this.cur) * (1 - Math.pow(1 - this.smoothing, dt * 60));
     if (Math.abs(this.target - this.cur) < 0.05) this.cur = this.target;
     var want = Math.round(this.cur);
     var have = this.nearestReady(want);

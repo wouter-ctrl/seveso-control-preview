@@ -3,7 +3,8 @@
    Standalone copy of the Capptions × Seveso Control tokens so the
    build drops onto the server with zero external dependencies.
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+/* Manrope is loaded via <link> in index.html (parallel discovery, no
+   render-blocking @import chain through fonts.googleapis.com). */
 
 :root {
   --coral:       hsl(0 100% 63%);
@@ -65,8 +66,6 @@ img { max-width: 100%; display: block; }
 .btn--primary:hover { background: hsl(177 100% 21%); transform: translateY(-1px); }
 .btn--ghost { background: transparent; color: var(--navy); border-color: hsl(233 59% 19% / .3); }
 .btn--ghost:hover { border-color: var(--navy); }
-.btn--ghost-dark { background: transparent; color: #fff; border-color: hsl(0 0% 100% / .35); }
-.btn--ghost-dark:hover { border-color: #fff; }
 
 /* ---------------- Nav ---------------- */
 .nav {
@@ -141,6 +140,7 @@ body[data-world="grade"] .film__grade { opacity: .88; }
   font-weight: 800; letter-spacing: -0.03em; line-height: 1.02;
   color: var(--navy);
   text-wrap: balance;
+  overflow-wrap: break-word; hyphens: auto; /* "commandocentrum" must not escape the column */
 }
 .chapter h1 em, .chapter .statement em { font-style: normal; color: var(--coral-dark); }
 .chapter .statement em.turn { color: var(--teal); }
@@ -184,8 +184,8 @@ body[data-world="grade"] .btn--ghost { color: #fff; border-color: hsl(0 0% 100% 
 .skip-film {
   position: fixed; right: 24px; bottom: 24px; z-index: 55;
   font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
-  color: hsl(233 59% 19% / .55);
-  border-bottom: 1px solid hsl(233 59% 19% / .25);
+  color: hsl(233 59% 19% / .75);
+  border-bottom: 1px solid hsl(233 59% 19% / .4);
   padding-bottom: 2px;
   opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility .4s;
 }
@@ -236,7 +236,7 @@ section[data-band] { position: relative; }
 .dash__lights { display: flex; gap: 6px; }
 .dash__lights i {
   width: 12px; height: 12px; border-radius: 50%;
-  opacity: .16; transition: none;
+  opacity: .16;
 }
 .dash__lights .l--r { background: var(--coral); }
 .dash__lights .l--o { background: var(--gold); }
@@ -261,7 +261,7 @@ section[data-band] { position: relative; }
 .on-panel h3 { font-size: clamp(26px, 2.6vw, 38px); font-weight: 800; letter-spacing: -0.02em; }
 .on-panel p { margin-top: 14px; font-size: 16px; line-height: 1.6; max-width: 30em; text-wrap: pretty; }
 .on-panel--oud { background: hsl(233 20% 24%); color: hsl(233 12% 68%); }
-.on-panel--oud .eyebrow { color: hsl(233 12% 55%); }
+.on-panel--oud .eyebrow { color: hsl(233 12% 68%); }
 .on-panel--oud h3 { color: hsl(233 12% 78%); }
 .on-panel--oud ul { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
 .on-panel--oud li { display: flex; gap: 10px; align-items: baseline; }
@@ -272,11 +272,8 @@ section[data-band] { position: relative; }
 .on-panel--nieuw p { color: var(--muted-fg); }
 .on-panel__media { margin: 28px -20px -24px; margin-top: auto; padding-top: 28px; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 8; background: transparent; }
 .on-panel__media > * { border-radius: var(--radius-xl); }
-.on-panel__media canvas { width: 100%; height: 100%; display: block; }
-.on-panel__media img { width: 100%; height: 100%; object-fit: cover; }
 .on-panel--oud .on-panel__media { margin-top: 28px; padding-top: 0; background: hsl(0 0% 97%); }
 .on-panel--oud .on-panel__media > * { border-radius: 0; }
-.on-panel--oud .on-panel__media img,
 .on-panel--oud .on-panel__media video { filter: grayscale(.55) contrast(.95); }
 
 /* Story clips (Higgsfield) — play once in view, rest on the "after" state */
@@ -337,9 +334,8 @@ section[data-band] { position: relative; }
   transition: transform .25s ease, box-shadow .25s ease;
   box-shadow: 0 1px 2px hsl(233 30% 35% / .06);
 }
-.service:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -24px hsl(233 30% 35% / .35); opacity: 1; }
+.service:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -24px hsl(233 30% 35% / .35); }
 .service--gold { border-left-color: var(--gold); }
-.service--coral { border-left-color: var(--coral); }
 .service__cat { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); }
 .service h3 { font-size: 20px; font-weight: 800; letter-spacing: -0.015em; color: var(--navy); }
 .service p { font-size: 15px; line-height: 1.55; color: var(--muted-fg); flex: 1; text-wrap: pretty; }
@@ -404,9 +400,11 @@ section[data-band] { position: relative; }
   .counters { grid-template-columns: repeat(2, 1fr); }
   .dash-wrap { grid-template-columns: 1fr; gap: 44px; }
 }
-@media (max-width: 760px) {
+/* 759.98 keeps exactly-760px out of this block: JS treats >=760 as desktop,
+   so 760 must be desktop-only in CSS too. */
+@media (max-width: 759.98px) {
   .nav__links > a:not(.btn) { display: none; }
-  .chapter { left: 6vw; width: 88vw; top: auto; bottom: 8svh; transform: none; }
+  .chapter { left: 6vw; width: 88vw; top: auto; bottom: 8vh; bottom: 8svh; }
   .chapter__inner { padding: 22px 20px; background: hsl(0 0% 100% / .94); border-radius: 20px; box-shadow: 0 10px 30px hsl(233 59% 19% / .1); }
   .chapter__inner::before { display: none; }
   .chapter h1, .chapter .statement { font-size: clamp(34px, 9.6vw, 56px); }
@@ -425,4 +423,24 @@ section[data-band] { position: relative; }
   .footer__grid { grid-template-columns: 1fr; }
   .film-static article { grid-template-columns: 1fr; }
   .skip-film { right: 16px; bottom: 16px; }
+  /* dashboard: element name on its own row so 'Directiebeoordeling' + lights
+     + status can never exceed a narrow phone's card width */
+  .dash { padding: 20px 16px; }
+  .dash__row { grid-template-columns: 1fr auto; gap: 8px 12px; padding: 14px 4px; }
+  .dash__el { grid-column: 1 / -1; min-width: 0; }
+  .dash__lights { grid-column: 1; justify-self: start; align-self: center; }
+  .dash__status { grid-column: 2; }
+  /* drift labels live in SVG units and scale with the viewBox — bump them so
+     they stay legible when the 1104-unit canvas renders at phone width */
+  .drift-viz text { font-size: 30px; }
+}
+
+/* Short viewports (landscape phones, small laptops): compact the pinned
+   chapters so ch4's CTAs stay inside the 100svh stage. */
+@media (min-width: 760px) and (max-height: 560px) {
+  .chapter { top: 56px; }
+  .chapter h1, .chapter .statement { font-size: clamp(26px, 8.2vh, 54px); }
+  .chapter--product .statement { font-size: clamp(24px, 7vh, 46px); }
+  .chapter .sub { margin-top: 14px; font-size: 15px; }
+  .chapter__ctas { margin-top: 22px; }
 }
