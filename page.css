@@ -274,7 +274,8 @@ section[data-band] { position: relative; }
 .on-panel__media > * { border-radius: var(--radius-xl); }
 .on-panel__media canvas { width: 100%; height: 100%; display: block; }
 .on-panel__media img { width: 100%; height: 100%; object-fit: cover; }
-.on-panel--oud .on-panel__media { margin-top: 28px; padding-top: 0; background: hsl(233 12% 86%); }
+.on-panel--oud .on-panel__media { margin-top: 28px; padding-top: 0; background: hsl(0 0% 97%); }
+.on-panel--oud .on-panel__media > * { border-radius: 0; }
 .on-panel--oud .on-panel__media img,
 .on-panel--oud .on-panel__media video { filter: grayscale(.55) contrast(.95); }
 
