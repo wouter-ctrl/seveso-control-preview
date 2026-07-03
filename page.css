@@ -25,7 +25,7 @@
   --radius-xl: 16px;
   --radius-2xl: 24px;
   --container: 1152px;
-  --film-vh: 520;      /* Act I pin length in vh (tweakable) */
+  --film-vh: 680;      /* Act I pin length in vh (tweakable) */
   --glow-teal: 0 0 20px -8px hsl(177 100% 25% / .9);
 }
 
@@ -106,8 +106,8 @@ body[data-world="grade"] .nav__brand .tm { color: var(--coral); }
 .film__poster { object-fit: cover; }
 @media (min-width: 760px) {
   .film__poster {
-    inset: auto; top: 50%; left: 72%;
-    width: auto; height: 60%; max-width: none;
+    inset: auto; top: 55%; left: 74%;
+    width: auto; height: 50%; max-width: none;
     transform: translate(-50%, -50%);
     object-fit: contain;
   }
@@ -124,8 +124,7 @@ body[data-world="grade"] .film__grade { opacity: .88; }
 .film__chapters { position: absolute; inset: 0; pointer-events: none; }
 .chapter {
   position: absolute;
-  left: max(6vw, 32px); top: 50%;
-  transform: translateY(-50%);
+  left: max(6vw, 32px); top: clamp(96px, 17vh, 190px);
   width: min(40vw, 580px);
   opacity: 0; visibility: hidden;
 }

@@ -80,9 +80,33 @@
   });
   api.scrubber = scrubber;
   // On desktop the film sits smaller on its own white ground, subject right of
-  // the copy column — not a giant full-bleed background.
-  if (window.innerWidth >= 760) { scrubber.zoom = 0.6; scrubber.shiftX = 0.22; }
+  // the copy column — not a giant full-bleed background. Kept well under the
+  // frames' native size so they render sharp (no upscale = no pixelation).
+  if (window.innerWidth >= 760) { scrubber.zoom = 0.44; scrubber.shiftX = 0.24; }
   gsap.ticker.add(function () { scrubber.tick(); });
+
+  /* The film itself journeys through the stage as you scroll — each story
+     beat carries the subject to a new position, so the scroll experience
+     lives in the animation rather than only in text swaps. Desktop only:
+     mobile stays full-bleed. */
+  if (window.innerWidth >= 760) {
+    var journey = { x: 0.24, y: 0.05, z: 0.50 };
+    var applyJourney = function () {
+      scrubber.shiftX = journey.x;
+      scrubber.shiftY = journey.y;
+      scrubber.zoom = journey.z;
+      scrubber.drawn = -1; // force repaint at the new position
+    };
+    applyJourney();
+    gsap.timeline({
+      defaults: { ease: 'none', onUpdate: applyJourney },
+      scrollTrigger: { trigger: '#film', start: 'top top', end: 'bottom bottom', scrub: true }
+    })
+      .to(journey, { x: 0.15, y: -0.03, z: 0.46, duration: 0.18 }, 0.02) // calm → swarm: drifts in toward the copy
+      .to(journey, { x: 0.27, y: 0.06, z: 0.42, duration: 0.28 }, 0.24)  // swarm builds: slides away, tightens
+      .to(journey, { x: 0.17, y: -0.02, z: 0.46, duration: 0.20 }, 0.56) // lightbulb: swings back toward center
+      .to(journey, { x: 0.24, y: 0.02, z: 0.44, duration: 0.22 }, 0.78); // resolve: settles right, at rest
+  }
 
   if (window.innerWidth < 760) {
     document.documentElement.style.setProperty('--film-vh', 420);

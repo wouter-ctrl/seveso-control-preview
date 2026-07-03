@@ -26,8 +26,9 @@
     this.onFirstFrame = opts.onFirstFrame || null;
     this.zoom = 1;      // 1 = full-bleed cover; <1 shrinks the film on its own white ground
     this.shiftX = 0;    // horizontal shift (fraction of canvas width, + = right)
+    this.shiftY = 0;    // vertical shift (fraction of canvas height, + = down)
     this.bg = null;     // sampled frame background color
-    this.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this._resize = this.resize.bind(this);
     window.addEventListener('resize', this._resize);
     this.resize();
@@ -138,7 +139,7 @@
     var dw = img.naturalWidth * s, dh = img.naturalHeight * s;
     this.ctx.fillStyle = this.bg;
     this.ctx.fillRect(0, 0, cw, ch);
-    this.ctx.drawImage(img, (cw - dw) / 2 + this.shiftX * cw, (ch - dh) / 2, dw, dh);
+    this.ctx.drawImage(img, (cw - dw) / 2 + this.shiftX * cw, (ch - dh) / 2 + this.shiftY * ch, dw, dh);
     this.drawn = i;
   };
 
