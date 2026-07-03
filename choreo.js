@@ -221,21 +221,40 @@
     });
   })();
 
-  /* ---------- Compliance drift · lines drift apart on scroll ---------- */
+  /* ---------- Compliance drift · lines run apart on scroll ----------
+     Scrub drives a progress proxy; both paths draw via dashoffset and the
+     end labels travel WITH their line tips (getPointAtLength), so
+     "wet & documenten" and "de werkvloer" walk along as the lines run. */
   (function driftViz() {
     var a = document.getElementById('drift-a'), b = document.getElementById('drift-b');
     if (!a || !b) return;
     var gap = document.getElementById('drift-gap');
-    [a, b].forEach(function (p) {
-      var L = p.getTotalLength();
-      p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
-    });
+    var startLabel = document.getElementById('drift-label-start');
+    var la = document.getElementById('drift-label-a');
+    var lb = document.getElementById('drift-label-b');
+    var La = a.getTotalLength(), Lb = b.getTotalLength();
+    a.style.strokeDasharray = La; a.style.strokeDashoffset = La;
+    b.style.strokeDasharray = Lb; b.style.strokeDashoffset = Lb;
+    var prog = { p: 0 };
+    function place() {
+      a.style.strokeDashoffset = La * (1 - prog.p);
+      b.style.strokeDashoffset = Lb * (1 - prog.p);
+      var pa = a.getPointAtLength(La * prog.p);
+      var pb = b.getPointAtLength(Lb * prog.p);
+      // labels trail the tip; clamp so the text never runs off the left edge
+      la.setAttribute('x', Math.max(170, pa.x)); la.setAttribute('y', pa.y - 16);
+      lb.setAttribute('x', Math.max(170, pb.x)); lb.setAttribute('y', pb.y + 30);
+    }
+    place();
+    gsap.set([startLabel, la, lb, gap], { autoAlpha: 0 });
     var tl = gsap.timeline({
       defaults: { ease: 'none' },
-      scrollTrigger: { trigger: '#drift', start: 'top 70%', end: 'top 15%', scrub: true }
+      scrollTrigger: { trigger: '#drift', start: 'top 70%', end: 'top 10%', scrub: true }
     });
-    tl.to([a, b], { strokeDashoffset: 0, duration: 0.8 }, 0)
-      .fromTo(gap, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.8);
+    tl.to(startLabel, { autoAlpha: 1, duration: 0.08 }, 0)
+      .to(prog, { p: 1, duration: 0.80, onUpdate: place }, 0.06)
+      .to([la, lb], { autoAlpha: 1, duration: 0.08 }, 0.26) // fade in once the lines are underway
+      .to(gap, { autoAlpha: 1, duration: 0.14 }, 0.86);
   })();
 
   /* ---------- Story clips (Higgsfield) — play once when they enter the view,
