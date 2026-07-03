@@ -425,6 +425,12 @@ section[data-band] { position: relative; }
   .footer__grid { grid-template-columns: 1fr; }
   .film-static article { grid-template-columns: 1fr; }
   .skip-film { right: 16px; bottom: 16px; }
+  /* film shows whole-frame (contain) on mobile — poster must match so the
+     first paint doesn't jump when the canvas takes over */
+  .film__poster { object-fit: contain; object-position: 50% 34%; }
+  /* thumb-first: stacked, full-width tap targets */
+  .chapter__ctas, .cta-final__btns { flex-direction: column; align-items: stretch; }
+  .chapter__ctas .btn, .cta-final__btns .btn { width: 100%; }
   /* dashboard: element name on its own row so 'Directiebeoordeling' + lights
      + status can never exceed a narrow phone's card width */
   .dash { padding: 20px 16px; }

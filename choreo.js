@@ -43,7 +43,9 @@
     }
     return 1;
   }
-  function frameUrl(i) { return 'frames/f_' + String(i).padStart(3, '0') + '.webp'; }
+  /* Mobile gets 768px renditions (frames-m/, vframes-m/): 3.2MB vs 9.8MB —
+     a phone never pays for desktop-resolution frames. */
+  function frameUrl(i) { return (DESKTOP.matches ? 'frames' : 'frames-m') + '/f_' + String(i).padStart(3, '0') + '.webp'; }
 
   /* ---------- Reduced motion (or CDN failure): static page, real values,
      no scrub — the film-static chapters carry the story instead ---------- */
@@ -110,6 +112,13 @@
      zoom/shiftX/shiftY — the tweaks API goes through it too, so scrolling
      can never silently revert a tweak. */
   var journey = null, applyJourney = null;
+  if (!DESKTOP.matches) {
+    /* Mobile: show the WHOLE frame (no cover-crop that cuts the subject),
+       raised to the upper half so the bottom chapter card never covers it. */
+    scrubber.fit = 'contain';
+    scrubber.shiftY = -0.16;
+    scrubber.drawn = -1;
+  }
   if (DESKTOP.matches) {
     journey = { x: 0.24, y: 0.05, z: 0.50 };
     applyJourney = function () {
@@ -224,7 +233,7 @@
       if (s) return;
       s = new FrameScrubber(c, {
         count: N,
-        src: function (i) { return 'vframes/v_' + String(i).padStart(3, '0') + '.webp'; },
+        src: function (i) { return (DESKTOP.matches ? 'vframes' : 'vframes-m') + '/v_' + String(i).padStart(3, '0') + '.webp'; },
         smoothing: 0.14,
         onFirstFrame: function () {
           var p = document.querySelector('.vinkjes-poster');

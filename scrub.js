@@ -27,6 +27,7 @@
     this.drawn = -1;
     this.onFirstFrame = opts.onFirstFrame || null;
     this.zoom = 1;      // 1 = full-bleed cover; <1 shrinks the film on its own white ground
+    this.fit = opts.fit || 'cover'; // 'cover' crops to fill; 'contain' shows the whole frame
     this.shiftX = 0;    // horizontal shift (fraction of canvas width, + = right)
     this.shiftY = 0;    // vertical shift (fraction of canvas height, + = down)
     this.bg = null;     // sampled frame background color
@@ -146,7 +147,7 @@
         this.bg = 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')';
       } catch (e) { this.bg = '#fbfcfd'; }
     }
-    var s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * this.zoom;
+    var s = (this.fit === 'contain' ? Math.min : Math.max)(cw / img.naturalWidth, ch / img.naturalHeight) * this.zoom;
     var dw = img.naturalWidth * s, dh = img.naturalHeight * s;
     this.ctx.fillStyle = this.bg;
     this.ctx.fillRect(0, 0, cw, ch);
