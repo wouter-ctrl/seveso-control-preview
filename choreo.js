@@ -249,7 +249,7 @@
     gsap.set([startLabel, la, lb, gap], { autoAlpha: 0 });
     var tl = gsap.timeline({
       defaults: { ease: 'none' },
-      scrollTrigger: { trigger: '#drift', start: 'top 70%', end: 'top 10%', scrub: true }
+      scrollTrigger: { trigger: '.drift-viz', start: 'top 78%', end: 'center 42%', scrub: true }
     });
     tl.to(startLabel, { autoAlpha: 1, duration: 0.08 }, 0)
       .to(prog, { p: 1, duration: 0.80, onUpdate: place }, 0.06)
