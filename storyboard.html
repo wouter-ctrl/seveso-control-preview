@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storyboard &amp; shot list — Capptions brain world</title>
+<link rel="stylesheet" href="page.css">
+<style>
+  body { background: var(--warm); }
+  .sb-head { padding: 120px 0 48px; }
+  .sb-head h1 { font-size: clamp(36px, 4.4vw, 64px); font-weight: 800; letter-spacing: -0.03em; color: var(--navy); }
+  .sb-head .lede { margin-top: 16px; font-size: 18px; line-height: 1.6; color: var(--muted-fg); max-width: 46em; }
+  .sb-rules { background: var(--navy); color: var(--on-dark); border-radius: var(--radius-2xl); padding: 32px 36px; margin: 24px 0 64px; }
+  .sb-rules h2 { color: #fff; font-size: 18px; margin-bottom: 14px; }
+  .sb-rules ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--on-dark-soft); }
+  .sb-rules b { color: #fff; }
+  .clip { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-2xl); padding: 40px 44px; margin-bottom: 32px; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 44px; }
+  .clip__num { font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--coral-dark); }
+  .clip h2 { margin-top: 10px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); }
+  .clip__meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+  .clip__meta span { font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--slate); background: var(--warm); border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; }
+  .clip p.desc { font-size: 15px; line-height: 1.6; color: var(--muted-fg); max-width: 42em; }
+  .clip pre { position: relative; margin: 18px 0 0; background: hsl(233 59% 17%); color: hsl(210 20% 92%); font: 400 13.5px/1.6 ui-monospace, 'SF Mono', Menlo, monospace; padding: 20px 22px; border-radius: var(--radius-xl); white-space: pre-wrap; word-break: break-word; }
+  .clip pre b { color: hsl(177 70% 60%); font-weight: 700; }
+  .copybtn { position: absolute; top: 10px; right: 10px; font: 700 11px/1 'Manrope', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: hsl(210 20% 85%); background: hsl(233 40% 26%); border: 0; border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+  .copybtn:hover { background: hsl(233 40% 32%); }
+  .refs { display: flex; flex-direction: column; gap: 14px; align-self: start; }
+  .ref { border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; background: #fcfdfd; }
+  .ref img { width: 100%; display: block; }
+  .ref figcaption { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 14px; font-size: 12px; color: var(--muted-fg); border-top: 1px solid var(--border); }
+  .ref figcaption b { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+  .ref--start figcaption b { color: var(--coral-dark); }
+  figure { margin: 0; }
+  .sb-foot { padding: 24px 0 96px; font-size: 14px; color: var(--muted-fg); max-width: 52em; line-height: 1.6; }
+  @media (max-width: 900px) { .clip { grid-template-columns: 1fr; padding: 28px; } .sb-head { padding-top: 96px; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav__inner">
+    <a class="nav__brand" href="index.html">
+      <img src="assets/logo_capptions.png" alt="capptions">
+      <span>× Seveso Control<span class="tm">™</span> · storyboard</span>
+    </a>
+    <nav class="nav__links"><a href="index.html">← Back to the page</a></nav>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="sb-head">
+    <p class="eyebrow" style="color: var(--teal);">Shot list · Higgsfield</p>
+    <h1>More story, more life: the clips to generate next.</h1>
+    <p class="lede">The brain is the through-line of the whole page: calm → overwhelmed → the idea → carried by capptions. Act I already tells that story with the master film. The clips below extend the same character into Acts II–III so no section goes dead. Each card gives you a <strong>newly composed BEFORE and AFTER keyframe</strong> (built in the film's own style — upload them as first/last frame in Higgsfield) plus the motion prompt. The page already ships with working fallbacks, so generate in any order.</p>
+  </div>
+
+  <div class="sb-rules">
+    <h2>Continuity rules — apply to every clip</h2>
+    <ul>
+      <li><b>Style lock:</b> flat 2D vector illustration, coral cartoon brain with thick navy outlines and teal tear-drops, paper-white background with faint teal sparkles. Palette: coral / teal / navy / gold only.</li>
+      <li><b>Format:</b> 1920×1080 · 25 fps · <b>no motion blur</b> (it smears when paused or scrubbed) · no audio · no baked-in text.</li>
+      <li><b>Loops:</b> first frame == last frame (upload the same image as start AND end frame to force this).</li>
+      <li><b>Character:</b> one brain only, always the same proportions. The round coral capptions mark is the only logo allowed.</li>
+      <li><b>Loops with different start/end keyframes:</b> generate two passes — BEFORE→AFTER, then AFTER→BEFORE — and concatenate for a seamless loop. Or upload only the AFTER frame as start+end and let the motion happen in between.</li>
+    </ul>
+  </div>
+
+  <!-- Clip M -->
+  <article class="clip">
+    <div>
+      <span class="clip__num">Clip 01 · highest impact</span>
+      <h2>Vertical hero — the full story in 9:16</h2>
+      <div class="clip__meta"><span>Act I on mobile</span><span>10 s</span><span>1080×1920</span><span>scroll-scrubbed</span></div>
+      <p class="desc">A portrait re-render of the master film, same four beats: calm brain → document swarm → lightbulb → capptions absorbs the chaos, teal calm. Today mobile uses a center crop of the landscape film; a native vertical render keeps the swarm icons in frame.</p>
+      <pre><b>Start frame:</b> m-vertical-start.webp · <b>End frame:</b> m-vertical-end.webp
+Flat 2D vector illustration, vertical 9:16. A cute coral cartoon brain character stands centered on a clean paper-white background. Beat 1 (0–1s): calm, small smile. Beat 2 (1–4.5s): paper documents, clipboards, folders, warning triangles and gears fly in from above and below, swirling around the brain; the brain looks anxious, red stress squiggles pulse around it. Beat 3 (4.5–6.5s): a lightbulb with a round coral logo inside pops up above the brain; the brain raises one finger, surprised. Beat 4 (6.5–10s): the lightbulb becomes a round coral logo at the lower third; all documents stream smoothly into it; the brain relaxes, closes its eyes, smiles, a soft teal aura glows around it with teal sparkles. Flat colors, thick navy outlines, no motion blur, no text.<button class="copybtn">Copy</button></pre>
+    </div>
+    <div class="refs">
+      <figure class="ref ref--start"><img src="storyboard/m-vertical-start.webp" alt="Before: calm brain, vertical"><figcaption><b>Before</b><span>m-vertical-start.webp</span></figcaption></figure>
+      <figure class="ref"><img src="storyboard/m-vertical-end.webp" alt="After: calm glowing brain, vertical"><figcaption><b>After</b><span>m-vertical-end.webp</span></figcaption></figure>
+    </div>
+  </article>
+
+  <!-- Clip A -->
+  <article class="clip">
+    <div>
+      <span class="clip__num">Clip 02</span>
+      <h2>„Op orde" — idle breathing loop</h2>
+      <div class="clip__meta"><span>Chapter 10 · final CTA background</span><span>6–8 s seamless loop</span><span>replaces Ken-Burns fallback</span></div>
+      <p class="desc">The film's final emotion, held: everything green, at rest. The calm brain breathes slowly, the teal aura pulses gently, sparkles drift. This closes the page on the same character the visitor met at the top.</p>
+      <pre><b>Start frame == End frame:</b> upload frame 250 as both (this clip holds the film's final shot, so reusing it is the point).
+Flat 2D vector illustration. The coral cartoon brain stands calm and still, eyes closed, gentle smile, on a paper-white background. A soft teal aura around it slowly pulses like calm breathing; tiny teal sparkles drift and twinkle; the small round coral logo floats at the right, bobbing very subtly. No camera movement. Very slow, serene, minimal motion. Seamless loop, no motion blur, no text.<button class="copybtn">Copy</button></pre>
+    </div>
+    <div class="refs">
+      <figure class="ref ref--start"><img src="frames/f_250.webp" alt="Start and end frame: calm glowing brain, final film frame"><figcaption><b>Start = End</b><span>frames/f_250.webp</span></figcaption></figure>
+    </div>
+  </article>
+
+  <!-- Clip B -->
+  <article class="clip">
+    <div>
+      <span class="clip__num">Clip 03</span>
+      <h2>„De stroom" — chaos becomes an ordered flow</h2>
+      <div class="clip__meta"><span>Chapter 7 · „Nieuw: infrastructuur" panel</span><span>4–6 s seamless loop</span><span>replaces ping-pong fallback</span></div>
+      <p class="desc">The old world (left panel) shows the swarm frozen and grey. The new world answers with motion: a continuous, calm line of documents gliding into the capptions mark, each turning teal as it's absorbed. Order as a system, not a moment.</p>
+      <pre><b>Before:</b> b-stroom-start.webp · <b>After:</b> b-stroom-end.webp (two-pass loop, see rules)
+Flat 2D vector illustration. Scattered paper documents and clipboard icons on the left gather into one steady stream that glides smoothly along a gentle curve into a round coral logo circle on the right; each icon lights up teal just before being absorbed, with a small soft pulse of the logo. Constant calm speed, evenly spaced icons, like a well-run conveyor. Paper-white background, few teal sparkles. No camera movement, no motion blur, no text.<button class="copybtn">Copy</button></pre>
+    </div>
+    <div class="refs">
+      <figure class="ref ref--start"><img src="storyboard/b-stroom-start.webp" alt="Before: documents scattered, logo waiting"><figcaption><b>Before</b><span>b-stroom-start.webp</span></figcaption></figure>
+      <figure class="ref"><img src="storyboard/b-stroom-end.webp" alt="After: documents in an ordered line flowing into the glowing logo"><figcaption><b>After</b><span>b-stroom-end.webp</span></figcaption></figure>
+    </div>
+  </article>
+
+  <!-- Clip C -->
+  <article class="clip">
+    <div>
+      <span class="clip__num">Clip 04</span>
+      <h2>„Stoplicht" — the dashboard comes alive</h2>
+      <div class="clip__meta"><span>Chapter 5 · platform section</span><span>4–6 s seamless loop</span><span>DOM dashboard stays as base</span></div>
+      <p class="desc">The lightbulb moment made literal: the brain proudly holds a tablet showing five status rows flipping rood→oranje→groen. Use it beside (or behind) the live DOM dashboard — the character carries the product beat.</p>
+      <pre><b>Before:</b> c-stoplicht-start.webp · <b>After:</b> c-stoplicht-end.webp
+Flat 2D vector illustration. A worried coral cartoon brain (red stress squiggles) stands left of a large tablet showing five status rows, every row's red dot lit. One by one, top to bottom, each row's red dot dims and its teal dot lights up with a tiny sparkle. As the rows turn teal the brain's stress squiggles fade, its expression relaxes into a closed-eyes smile and a soft teal aura grows around it; when all five rows are teal a gentle teal glow washes over the tablet. Paper-white background, thick navy outlines, no camera movement, no motion blur, no readable text on the screen (abstract bars only).<button class="copybtn">Copy</button></pre>
+    </div>
+    <div class="refs">
+      <figure class="ref ref--start"><img src="storyboard/c-stoplicht-start.webp" alt="Before: worried brain next to a tablet with all rows red"><figcaption><b>Before</b><span>c-stoplicht-start.webp</span></figcaption></figure>
+      <figure class="ref"><img src="storyboard/c-stoplicht-end.webp" alt="After: calm glowing brain next to a tablet with all rows teal"><figcaption><b>After</b><span>c-stoplicht-end.webp</span></figcaption></figure>
+    </div>
+  </article>
+
+  <!-- Clip D -->
+  <article class="clip">
+    <div>
+      <span class="clip__num">Clip 05</span>
+      <h2>„Vijf documenten, vijf vinkjes" — the VBS rhythm</h2>
+      <div class="clip__meta"><span>Chapter 6 · above the 01–05 steps</span><span>4–6 s seamless loop</span><span>optional</span></div>
+      <p class="desc">Five documents from the swarm line up in a neat row and each receives a teal check, left to right — mirroring the numbered steps 01–05 directly below it. Small banner format works well here (e.g. 1920×700 crop region in the center).</p>
+      <pre><b>Before:</b> d-vinkjes-start.webp · <b>After:</b> d-vinkjes-end.webp
+Flat 2D vector illustration. Five paper document and clipboard icons lie scattered at slight angles. They slide smoothly into one neat horizontal row, evenly spaced and upright. Then, left to right, a teal checkmark pops onto each document with a tiny bounce and sparkle. Hold one second, all five checked. Paper-white background, calm and precise, no camera movement, no motion blur, no readable text.<button class="copybtn">Copy</button></pre>
+    </div>
+    <div class="refs">
+      <figure class="ref ref--start"><img src="storyboard/d-vinkjes-start.webp" alt="Before: five documents scattered at angles"><figcaption><b>Before</b><span>d-vinkjes-start.webp</span></figcaption></figure>
+      <figure class="ref"><img src="storyboard/d-vinkjes-end.webp" alt="After: five documents in a neat row, each with a teal check"><figcaption><b>After</b><span>d-vinkjes-end.webp</span></figcaption></figure>
+    </div>
+  </article>
+
+  <!-- Clip E -->
+  <article class="clip">
+    <div>
+      <span class="clip__num">Clip 06 · optional</span>
+      <h2>„Er is hulp" — the expert joins</h2>
+      <div class="clip__meta"><span>Chapter 9 · services / Expert Hotline</span><span>4–6 s seamless loop</span><span>optional</span></div>
+      <p class="desc">The human layer of the story: the brain isn't alone anymore. A friendly speech bubble with the coral mark appears next to the brain; the brain relaxes visibly. Sells the hotline and done-for-you services without a single word of copy.</p>
+      <pre><b>Before:</b> e-hulp-start.webp · <b>After:</b> e-hulp-end.webp
+Flat 2D vector illustration. The coral cartoon brain stands alone, worried, red stress squiggles pulsing around it. A rounded white speech bubble with a small round coral logo inside pops up beside it with a soft bounce; a gentle teal pulse travels from the bubble to the brain; the stress squiggles fade, the brain's expression relaxes into a closed-eyes smile, its posture straightens and a soft teal aura grows around it. Paper-white background, thick navy outlines, no camera movement, no motion blur, no text.<button class="copybtn">Copy</button></pre>
+    </div>
+    <div class="refs">
+      <figure class="ref ref--start"><img src="storyboard/e-hulp-start.webp" alt="Before: worried brain alone with stress squiggles"><figcaption><b>Before</b><span>e-hulp-start.webp</span></figcaption></figure>
+      <figure class="ref"><img src="storyboard/e-hulp-end.webp" alt="After: calm glowing brain with a speech bubble containing the capptions mark"><figcaption><b>After</b><span>e-hulp-end.webp</span></figcaption></figure>
+    </div>
+  </article>
+
+  <p class="sb-foot"><strong>Delivery:</strong> drop each MP4 into the <code>seveso/</code> folder and tell me which clip it is. Loop clips (02–06) go straight in as muted autoplay <code>&lt;video loop&gt;</code> elements — no frame extraction needed. The vertical hero (01) gets the same WebP frame-sequence treatment as the master film so it scrubs on mobile.</p>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copybtn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = btn.closest('pre').cloneNode(true);
+      pre.querySelector('.copybtn').remove();
+      navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+        btn.textContent = 'Copied!';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+      });
+    });
+  });
+</script>
+</body>
+</html>
