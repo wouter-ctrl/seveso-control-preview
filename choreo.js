@@ -285,11 +285,27 @@
      rest on the resolved "after" state, rewind when fully out of view so the
      story retells on the next pass. ---------- */
   document.querySelectorAll('video[data-play-on-view]').forEach(function (v) {
+    var inView = false;
+    var replayAfter = parseFloat(v.getAttribute('data-replay-after') || '0');
+    var replayTimer = null;
+    if (replayAfter > 0) {
+      // stays alive: rest on the resolved state for a beat, then retell
+      v.addEventListener('ended', function () {
+        clearTimeout(replayTimer);
+        replayTimer = setTimeout(function () {
+          if (inView) { v.currentTime = 0; v.play().catch(function () {}); }
+        }, replayAfter * 1000);
+      });
+    }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.intersectionRatio >= 0.35) {
+          inView = true;
+          if (v.ended && replayAfter > 0) v.currentTime = 0;
           if (!v.ended) v.play().catch(function () {});
         } else if (!e.isIntersecting) {
+          inView = false;
+          clearTimeout(replayTimer);
           v.pause();
           if (v.ended) v.currentTime = 0;
         }

@@ -270,10 +270,12 @@ section[data-band] { position: relative; }
 .on-panel--nieuw .eyebrow { color: var(--teal); }
 .on-panel--nieuw h3 { color: var(--navy); }
 .on-panel--nieuw p { color: var(--muted-fg); }
-.on-panel__media { margin: 28px -20px -24px; margin-top: auto; padding-top: 28px; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 8; background: transparent; }
-.on-panel__media > * { border-radius: var(--radius-xl); }
-.on-panel--oud .on-panel__media { margin-top: 28px; padding-top: 0; background: hsl(0 0% 97%); }
-.on-panel--oud .on-panel__media > * { border-radius: 0; }
+/* both panels: identical media box + identical inner padding so the two
+   animations render the same size; box background matches each video's own
+   ground so the padding strip is invisible */
+.on-panel__media { margin: 28px -20px -24px; margin-top: auto; padding-top: 28px; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 8; background: #fff; }
+.on-panel__media > * { border-radius: 0; }
+.on-panel--oud .on-panel__media { background: hsl(0 0% 97%); }
 .on-panel--oud .on-panel__media video { filter: grayscale(.55) contrast(.95); }
 
 /* Story clips (Higgsfield) — play once in view, rest on the "after" state */
