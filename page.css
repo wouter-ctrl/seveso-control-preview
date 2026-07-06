@@ -271,11 +271,10 @@ section[data-band] { position: relative; }
 .on-panel--nieuw h3 { color: var(--navy); }
 .on-panel--nieuw p { color: var(--muted-fg); }
 /* both panels: identical media box, video fills it edge-to-edge (no inner
-   strip); the text→video gap is a guaranteed margin on the last text block,
-   so bottom-alignment (margin-top:auto) can never eat the breathing room */
-.on-panel__media { margin: 0 -20px -24px; margin-top: auto; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 8; background: #fff; }
+   strip); fixed top margin (not auto) so the text→video gap is identical
+   regardless of how tall oud vs nieuw text content is */
+.on-panel__media { margin: 40px -20px -24px 0; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 8; background: #fff; }
 .on-panel__media > * { border-radius: 0; }
-.on-panel > :nth-last-child(2) { margin-bottom: 28px; }
 .on-panel--oud .on-panel__media { background: hsl(0 0% 97%); }
 .on-panel--oud .on-panel__media video { filter: grayscale(.55) contrast(.95); }
 
