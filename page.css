@@ -271,8 +271,11 @@ section[data-band] { position: relative; }
 .on-panel--nieuw h3 { color: var(--navy); }
 .on-panel--nieuw p { color: var(--muted-fg); }
 /* both panels: identical media box, video fills it edge-to-edge (no inner
-   strip); fixed top margin (not auto) so the text→video gap is identical
-   regardless of how tall oud vs nieuw text content is */
+   strip). .on-panel__body gets a shared min-height (tall enough for oud's
+   extra <ul>) so both media blocks start at the same row regardless of
+   how tall oud vs nieuw text content is, then a fixed top margin (not
+   auto) keeps the text→video gap identical too */
+.on-panel__body { min-height: 232px; }
 .on-panel__media { margin: 40px -20px -24px 0; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 8; background: #fff; }
 .on-panel__media > * { border-radius: 0; }
 .on-panel--oud .on-panel__media { background: hsl(0 0% 97%); }
