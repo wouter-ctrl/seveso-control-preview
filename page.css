@@ -151,6 +151,7 @@ body[data-world="grade"] .film__grade { opacity: .88; }
   max-width: 34em; text-wrap: pretty;
 }
 .chapter--product .statement { font-size: clamp(34px, 4vw, 68px); }
+.statement--sm { font-size: clamp(30px, 3.7vw, 60px); }
 .chapter__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; opacity: 0; visibility: hidden; }
 .chapter--active, .chapter--active .chapter__ctas { pointer-events: auto; }
 
@@ -413,6 +414,7 @@ section[data-band] { position: relative; }
   .chapter__inner { padding: 22px 20px; background: hsl(0 0% 100% / .94); border-radius: 20px; box-shadow: 0 10px 30px hsl(233 59% 19% / .1); }
   .chapter__inner::before { display: none; }
   .chapter h1, .chapter .statement { font-size: clamp(34px, 9.6vw, 56px); }
+  .statement--sm { font-size: clamp(28px, 7.6vw, 44px); }
   .chapter .sub { font-size: 16px; margin-top: 16px; }
   body[data-world="scrim"] .chapter__inner { padding: 28px; }
   .section-pad { padding: 80px 0 88px; }
@@ -452,6 +454,7 @@ section[data-band] { position: relative; }
   .chapter { top: 56px; }
   .chapter h1, .chapter .statement { font-size: clamp(26px, 8.2vh, 54px); }
   .chapter--product .statement { font-size: clamp(24px, 7vh, 46px); }
+  .statement--sm { font-size: clamp(22px, 6.4vh, 42px); }
   .chapter .sub { margin-top: 14px; font-size: 15px; }
   .chapter__ctas { margin-top: 22px; }
 }
