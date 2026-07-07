@@ -67,7 +67,7 @@
   gsap.registerPlugin(ScrollTrigger);
 
   /* ---------- Lenis ↔ ScrollTrigger sync ---------- */
-  var lenis = new Lenis({ lerp: 0.11 });
+  var lenis = new Lenis({ lerp: 0.16 });
   api.lenis = lenis;
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
@@ -97,7 +97,7 @@
   var scrubber = new FrameScrubber(canvas, {
     count: FRAMES,
     src: frameUrl,
-    smoothing: 0.12,
+    smoothing: 0.18,
     onFirstFrame: function () { poster.style.visibility = 'hidden'; }
   });
   api.scrubber = scrubber;
@@ -116,11 +116,11 @@
     /* Mobile: show the WHOLE frame (no cover-crop that cuts the subject),
        raised to the upper half so the bottom chapter card never covers it. */
     scrubber.fit = 'contain';
-    scrubber.shiftY = -0.16;
+    scrubber.shiftY = -0.21;
     scrubber.drawn = -1;
   }
   if (DESKTOP.matches) {
-    journey = { x: 0.24, y: 0.05, z: 0.50 };
+    journey = { x: 0.17, y: 0.05, z: 0.50 };
     applyJourney = function () {
       scrubber.shiftX = journey.x;
       scrubber.shiftY = journey.y;
@@ -132,10 +132,10 @@
       defaults: { ease: 'none', onUpdate: applyJourney },
       scrollTrigger: { trigger: '#film', start: 'top top', end: 'bottom bottom', scrub: true }
     })
-      .to(journey, { x: 0.15, y: -0.03, z: 0.46, duration: 0.18 }, 0.02) // calm → swarm: drifts in toward the copy
-      .to(journey, { x: 0.27, y: 0.06, z: 0.42, duration: 0.28 }, 0.24)  // swarm builds: slides away, tightens
-      .to(journey, { x: 0.17, y: -0.02, z: 0.46, duration: 0.20 }, 0.56) // lightbulb: swings back toward center
-      .to(journey, { x: 0.24, y: 0.02, z: 0.44, duration: 0.22 }, 0.78); // resolve: settles right, at rest
+      .to(journey, { x: 0.09, y: -0.03, z: 0.46, duration: 0.18 }, 0.02) // calm → swarm: drifts in toward the copy
+      .to(journey, { x: 0.20, y: 0.06, z: 0.42, duration: 0.28 }, 0.24)  // swarm builds: slides away, tightens
+      .to(journey, { x: 0.11, y: -0.02, z: 0.46, duration: 0.20 }, 0.56) // lightbulb: swings back toward center
+      .to(journey, { x: 0.17, y: 0.02, z: 0.44, duration: 0.22 }, 0.78); // resolve: settles right, at rest
   }
 
   if (!DESKTOP.matches) {
@@ -234,7 +234,7 @@
       s = new FrameScrubber(c, {
         count: N,
         src: function (i) { return (DESKTOP.matches ? 'vframes' : 'vframes-m') + '/v_' + String(i).padStart(3, '0') + '.webp'; },
-        smoothing: 0.14,
+        smoothing: 0.19,
         onFirstFrame: function () {
           var p = document.querySelector('.vinkjes-poster');
           if (p) p.style.visibility = 'hidden';

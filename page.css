@@ -247,8 +247,8 @@ section[data-band] { position: relative; }
 .dash__status .s--o { color: var(--gold); }
 .dash__status .s--g { color: var(--teal-bright); }
 
-/* Chapter 6 — VBS steps 01–05 */
-.steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px; }
+/* Chapter 6 — VBS steps 01–07 */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
 .step { border-top: 2px solid var(--border); padding-top: 22px; }
 .step__num { font-size: 15px; font-weight: 800; color: var(--coral-dark); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
 .step h3 { margin-top: 12px; font-size: 19px; font-weight: 800; letter-spacing: -0.015em; color: var(--navy); }
