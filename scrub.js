@@ -126,7 +126,12 @@
     var now = (window.performance || Date).now();
     var dt = this._last === null ? 1 / 60 : Math.min(0.1, (now - this._last) / 1000);
     this._last = now;
-    this.cur += (this.target - this.cur) * (1 - Math.pow(1 - this.smoothing, dt * 60));
+    var step = (this.target - this.cur) * (1 - Math.pow(1 - this.smoothing, dt * 60));
+    // cap frames-per-tick so a fast scroll burst plays through the sequence
+    // instead of jump-cutting straight to the target (reads as low fps)
+    var maxStep = 3 * dt * 60;
+    if (step > maxStep) step = maxStep; else if (step < -maxStep) step = -maxStep;
+    this.cur += step;
     if (Math.abs(this.target - this.cur) < 0.05) this.cur = this.target;
     var want = Math.round(this.cur);
     var have = this.nearestReady(want);
