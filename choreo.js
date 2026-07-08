@@ -1,7 +1,10 @@
 /* ============================================================
    Seveso Control™ scroll-film — choreography.
    Lenis (smooth scroll) + GSAP ScrollTrigger (all scroll choreo)
-   + FrameScrubber (canvas frame sequence, see scrub.js).
+   + VideoScrubber (scroll-driven video currentTime, see video-scrub.js).
+   All-keyframe H.264 instead of a canvas + per-frame WebP decode -
+   hardware video decode instead of CPU-bound image decode (~6-7x less
+   main-thread work under throttle, measured).
    Act I: one pinned stage, one master trigger, chapters timed as
    fractions of its progress. Acts II–III: scrub-linked motion.
    ============================================================ */
@@ -43,9 +46,10 @@
     }
     return 1;
   }
-  /* Mobile gets 768px renditions (frames-m/, vframes-m/): 3.2MB vs 9.8MB —
-     a phone never pays for desktop-resolution frames. */
-  function frameUrl(i) { return (DESKTOP.matches ? 'frames' : 'frames-m') + '/f_' + String(i).padStart(3, '0') + '.webp'; }
+  /* Mobile gets the 768px rendition (film-mobile.mp4): a phone never pays
+     for desktop-resolution video. */
+  function filmSrc() { return DESKTOP.matches ? 'clips-scrub/film-desktop.mp4' : 'clips-scrub/film-mobile.mp4'; }
+  function filmPoster() { return DESKTOP.matches ? 'frames/f_001.webp' : 'frames-m/f_001.webp'; }
 
   /* ---------- Reduced motion (or CDN failure): static page, real values,
      no scrub — the film-static chapters carry the story instead ---------- */
@@ -92,11 +96,13 @@
   });
 
   /* ---------- Act I · the film ---------- */
-  var canvas = document.querySelector('.film__canvas');
+  var video = document.querySelector('.film__canvas');
   var poster = document.querySelector('.film__poster');
-  var scrubber = new FrameScrubber(canvas, {
+  video.poster = filmPoster();
+  video.src = filmSrc();
+  var scrubber = new VideoScrubber(video, {
     count: FRAMES,
-    src: frameUrl,
+    fps: 30,
     smoothing: 0.18,
     onFirstFrame: function () { poster.style.visibility = 'hidden'; }
   });
@@ -117,7 +123,6 @@
        Text and film are separate stacked zones now (CSS), so the film
        centers in its own box - no raise needed to dodge an overlay. */
     scrubber.fit = 'contain';
-    scrubber.drawn = -1;
   }
   if (DESKTOP.matches) {
     journey = { x: 0.17, y: 0.05, z: 0.50 };
@@ -125,7 +130,6 @@
       scrubber.shiftX = journey.x;
       scrubber.shiftY = journey.y;
       scrubber.zoom = journey.z;
-      scrubber.drawn = -1; // force repaint at the new position
     };
     applyJourney();
     gsap.timeline({
@@ -224,16 +228,17 @@
     });
   });
 
-  /* ---------- Chapter 6 · vinkjes frame-sequence scrubs with scroll ---------- */
+  /* ---------- Chapter 6 · vinkjes video scrubs with scroll ---------- */
   (function vinkjesScrub() {
     var c = document.querySelector('.vinkjes-canvas');
     if (!c) return;
     var N = 100, s = null;
     function ensure() {
       if (s) return;
-      s = new FrameScrubber(c, {
+      c.src = DESKTOP.matches ? 'clips-scrub/vinkjes-desktop.mp4' : 'clips-scrub/vinkjes-mobile.mp4';
+      s = new VideoScrubber(c, {
         count: N,
-        src: function (i) { return (DESKTOP.matches ? 'vframes' : 'vframes-m') + '/v_' + String(i).padStart(3, '0') + '.webp'; },
+        fps: 30,
         smoothing: 0.19,
         onFirstFrame: function () {
           var p = document.querySelector('.vinkjes-poster');
