@@ -414,10 +414,10 @@ section[data-band] { position: relative; }
      overlay, so text and image never fight for the same space. Stage
      shrunk to fit the two zones (was 100vh, way taller than 16:9 content
      needs - that's what read as "whitespace under the animation"). */
-  .film__stage { height: 78vh; height: 78svh; }
+  .film__stage { height: 82vh; height: 82svh; }
   .chapter { left: 6vw; width: 88vw; top: 5vh; bottom: auto; }
   .film__poster, .film__canvas {
-    inset: auto; top: 40vh; left: 0; right: 0; bottom: auto;
+    inset: auto; top: 46vh; left: 0; right: 0; bottom: auto;
     width: 100%; height: auto; aspect-ratio: 16 / 9;
   }
   .chapter__inner { padding: 22px 20px 0; background: none; border-radius: 0; box-shadow: none; }
