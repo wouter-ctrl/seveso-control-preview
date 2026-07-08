@@ -53,6 +53,19 @@
     video.playsInline = true;
     video.preload = 'auto';
     this._applyTransform();
+
+    // Some browsers won't actually paint a decoded frame from a seek alone
+    // on a video that has never played - a silent play()+immediate pause()
+    // "warms up" the decode pipeline so subsequent currentTime seeks
+    // reliably render. Standard fix for seek-only (never-autoplaying)
+    // scroll-scrubbed video.
+    var warm = function () {
+      video.removeEventListener('loadedmetadata', warm);
+      var p = video.play();
+      if (p && p.then) p.then(function () { video.pause(); }).catch(function () {});
+      else video.pause();
+    };
+    if (video.readyState >= 1) warm(); else video.addEventListener('loadedmetadata', warm);
   }
 
   VideoScrubber.prototype._fireFirstFrame = function () {
@@ -66,10 +79,16 @@
   };
 
   VideoScrubber.prototype._doSeek = function () {
+    // Re-seeking to (near enough) the same time every tick, even once cur
+    // has settled, was hammering WebKit's compositor and left a stale/
+    // ghosted frame behind on scroll-away in testing. Half a frame's worth
+    // of change is imperceptible, so skip the seek entirely below that.
+    if (this._lastSeekCur !== undefined && Math.abs(this.cur - this._lastSeekCur) < 0.5 / this.fps) return;
     if (this._seeking) { this._pending = true; return; }
     var duration = this.video.duration || (this.count / this.fps);
     var t = Math.max(0, Math.min(duration - 0.001, this.cur / this.fps));
     this._seeking = true;
+    this._lastSeekCur = this.cur;
     try { this.video.currentTime = t; } catch (e) { this._seeking = false; }
   };
 
