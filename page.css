@@ -411,9 +411,15 @@ section[data-band] { position: relative; }
 @media (max-width: 759.98px) {
   .nav__links > a:not(.btn) { display: none; }
   /* Stacked layout: text zone on top, film in its own zone below - no
-     overlay, so text and image never fight for the same space. */
-  .chapter { left: 6vw; width: 88vw; top: 6vh; bottom: auto; }
-  .film__poster, .film__canvas { inset: 42vh 0 0 0; height: auto; }
+     overlay, so text and image never fight for the same space. Stage
+     shrunk to fit the two zones (was 100vh, way taller than 16:9 content
+     needs - that's what read as "whitespace under the animation"). */
+  .film__stage { height: 78vh; height: 78svh; }
+  .chapter { left: 6vw; width: 88vw; top: 5vh; bottom: auto; }
+  .film__poster, .film__canvas {
+    inset: auto; top: 40vh; left: 0; right: 0; bottom: auto;
+    width: 100%; height: auto; aspect-ratio: 16 / 9;
+  }
   .chapter__inner { padding: 22px 20px 0; background: none; border-radius: 0; box-shadow: none; }
   .chapter__inner::before { display: none; }
   .chapter h1, .chapter .statement { font-size: clamp(34px, 9.6vw, 56px); }
@@ -452,7 +458,7 @@ section[data-band] { position: relative; }
   /* thumb-first: stacked, full-width tap targets - but full-width at the
      desktop button size reads oversized on a narrow phone, so trim it down */
   .chapter__ctas, .cta-final__btns { flex-direction: column; align-items: stretch; }
-  .chapter__ctas .btn, .cta-final__btns .btn { width: 100%; min-height: 44px; padding: 11px 20px; font-size: 14px; }
+  .chapter__ctas .btn, .cta-final__btns .btn { width: 100%; min-height: 38px; padding: 8px 16px; font-size: 13px; gap: 6px; }
   /* dashboard: element name on its own row so 'Directiebeoordeling' + lights
      + status can never exceed a narrow phone's card width */
   .dash { padding: 20px 16px; }
