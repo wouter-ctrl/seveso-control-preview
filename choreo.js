@@ -113,10 +113,10 @@
      can never silently revert a tweak. */
   var journey = null, applyJourney = null;
   if (!DESKTOP.matches) {
-    /* Mobile: show the WHOLE frame (no cover-crop that cuts the subject),
-       raised to the upper half so the bottom chapter card never covers it. */
+    /* Mobile: show the WHOLE frame (no cover-crop that cuts the subject).
+       Text and film are separate stacked zones now (CSS), so the film
+       centers in its own box - no raise needed to dodge an overlay. */
     scrubber.fit = 'contain';
-    scrubber.shiftY = -0.21;
     scrubber.drawn = -1;
   }
   if (DESKTOP.matches) {

@@ -410,13 +410,28 @@ section[data-band] { position: relative; }
    so 760 must be desktop-only in CSS too. */
 @media (max-width: 759.98px) {
   .nav__links > a:not(.btn) { display: none; }
-  .chapter { left: 6vw; width: 88vw; top: auto; bottom: 8vh; bottom: 8svh; }
-  .chapter__inner { padding: 22px 20px; background: hsl(0 0% 100% / .94); border-radius: 20px; box-shadow: 0 10px 30px hsl(233 59% 19% / .1); }
+  /* Stacked layout: text zone on top, film in its own zone below - no
+     overlay, so text and image never fight for the same space. */
+  .chapter { left: 6vw; width: 88vw; top: 6vh; bottom: auto; }
+  .film__poster, .film__canvas { inset: 42vh 0 0 0; height: auto; }
+  .chapter__inner { padding: 22px 20px 0; background: none; border-radius: 0; box-shadow: none; }
   .chapter__inner::before { display: none; }
   .chapter h1, .chapter .statement { font-size: clamp(34px, 9.6vw, 56px); }
   .statement--sm { font-size: clamp(28px, 7.6vw, 44px); }
   .chapter .sub { font-size: 16px; margin-top: 16px; }
-  body[data-world="scrim"] .chapter__inner { padding: 28px; }
+  body[data-world="scrim"] .chapter__inner { padding: 22px 20px 0; }
+  /* the film no longer sits behind the text on mobile, so the dark-world
+     (scrim/grade) white-text treatment would be invisible against the
+     plain page background - force chapters back to the light-world
+     palette on mobile regardless of which world the chapter is in. */
+  body[data-world="scrim"] .chapter h1, body[data-world="scrim"] .chapter .statement,
+  body[data-world="grade"] .chapter h1, body[data-world="grade"] .chapter .statement { color: var(--navy); }
+  body[data-world="scrim"] .chapter h1 em, body[data-world="scrim"] .chapter .statement em,
+  body[data-world="grade"] .chapter h1 em, body[data-world="grade"] .chapter .statement em { color: var(--coral-dark); }
+  body[data-world="scrim"] .chapter .statement em.turn,
+  body[data-world="grade"] .chapter .statement em.turn { color: var(--teal); }
+  body[data-world="scrim"] .chapter .sub, body[data-world="grade"] .chapter .sub { color: var(--slate); }
+  body[data-world="scrim"] .chapter .eyebrow, body[data-world="grade"] .chapter .eyebrow { color: var(--teal); }
   .section-pad { padding: 80px 0 88px; }
   .steps { grid-template-columns: 1fr 1fr; }
   .services { grid-template-columns: 1fr; }
@@ -431,11 +446,13 @@ section[data-band] { position: relative; }
   .film-static article { grid-template-columns: 1fr; }
   .skip-film { right: 16px; bottom: 16px; }
   /* film shows whole-frame (contain) on mobile — poster must match so the
-     first paint doesn't jump when the canvas takes over */
-  .film__poster { object-fit: contain; object-position: 50% 34%; }
-  /* thumb-first: stacked, full-width tap targets */
+     first paint doesn't jump when the canvas takes over. Centered: the
+     film has its own zone now, no bottom text card to dodge. */
+  .film__poster { object-fit: contain; object-position: 50% 50%; }
+  /* thumb-first: stacked, full-width tap targets - but full-width at the
+     desktop button size reads oversized on a narrow phone, so trim it down */
   .chapter__ctas, .cta-final__btns { flex-direction: column; align-items: stretch; }
-  .chapter__ctas .btn, .cta-final__btns .btn { width: 100%; }
+  .chapter__ctas .btn, .cta-final__btns .btn { width: 100%; min-height: 44px; padding: 11px 20px; font-size: 14px; }
   /* dashboard: element name on its own row so 'Directiebeoordeling' + lights
      + status can never exceed a narrow phone's card width */
   .dash { padding: 20px 16px; }
