@@ -143,15 +143,11 @@
     var img = this.imgs[i];
     if (!img) return;
     var cw = this.canvas.width, ch = this.canvas.height;
-    if (!this.bg) {
-      try {
-        var t = document.createElement('canvas'); t.width = t.height = 1;
-        var tc = t.getContext('2d');
-        tc.drawImage(img, 8, 8, 1, 1, 0, 0, 1, 1);
-        var d = tc.getImageData(0, 0, 1, 1).data;
-        this.bg = 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')';
-      } catch (e) { this.bg = '#fbfcfd'; }
-    }
+    // Fixed page-white, not sampled from the frame: a sampled corner pixel
+    // can differ by a shade from the page background, and any sub-pixel
+    // rounding gap at the box edge (aspect-ratio boxes, DPR rounding) then
+    // shows as a visible seam instead of blending into the page.
+    if (!this.bg) this.bg = '#fcfdfd';
     var s = (this.fit === 'contain' ? Math.min : Math.max)(cw / img.naturalWidth, ch / img.naturalHeight) * this.zoom;
     var dw = img.naturalWidth * s, dh = img.naturalHeight * s;
     this.ctx.fillStyle = this.bg;

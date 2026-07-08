@@ -84,7 +84,8 @@ img { max-width: 100%; display: block; }
 .nav__links { display: flex; align-items: center; gap: 28px; }
 .nav__links > a:not(.btn) { font-size: 14px; font-weight: 600; color: hsl(233 59% 19% / .75); }
 .nav__links > a:not(.btn):hover { color: var(--navy); }
-.nav .btn { min-height: 40px; padding: 9px 18px; font-size: 14px; }
+.nav .btn { min-height: 40px; padding: 9px 18px; font-size: 14px; white-space: nowrap; }
+.nav__cta-short { display: none; }
 body[data-world="grade"] .nav { background: hsl(233 59% 15% / .66); border-bottom-color: hsl(0 0% 100% / .1); }
 body[data-world="grade"] .nav__brand,
 body[data-world="grade"] .nav__links > a:not(.btn) { color: hsl(0 0% 100% / .88); }
@@ -250,9 +251,9 @@ section[data-band] { position: relative; }
 
 /* Chapter 6 — VBS steps 01–07 */
 .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
-.step { border-top: 2px solid var(--border); padding-top: 22px; }
+.step { border-top: 2px solid var(--border); padding-top: 22px; min-width: 0; }
 .step__num { font-size: 15px; font-weight: 800; color: var(--coral-dark); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
-.step h3 { margin-top: 12px; font-size: 19px; font-weight: 800; letter-spacing: -0.015em; color: var(--navy); }
+.step h3 { margin-top: 12px; font-size: 19px; font-weight: 800; letter-spacing: -0.015em; color: var(--navy); overflow-wrap: break-word; hyphens: auto; }
 .step p { margin-top: 10px; font-size: 15px; line-height: 1.55; color: var(--muted-fg); text-wrap: pretty; }
 
 /* Chapter 7 — oud vs nieuw */
@@ -410,6 +411,15 @@ section[data-band] { position: relative; }
    so 760 must be desktop-only in CSS too. */
 @media (max-width: 759.98px) {
   .nav__links > a:not(.btn) { display: none; }
+  /* nav CTA was wrapping to 3 lines at narrow widths (no nowrap + full
+     "Vraag offerte aan" text competing with the brand for ~320px) -
+     short label + tighter size, never wraps regardless of width. */
+  .nav { padding: 16px clamp(16px, 4vw, 24px); }
+  .nav__brand span { font-size: 13px; }
+  .nav__links { gap: 12px; }
+  .nav .btn { min-height: 34px; padding: 7px 14px; font-size: 12.5px; }
+  .nav__cta-full { display: none; }
+  .nav__cta-short { display: inline; }
   /* Stacked layout: text zone on top, film in its own zone below - no
      overlay, so text and image never fight for the same space. Stage
      shrunk to fit the two zones (was 100vh, way taller than 16:9 content
