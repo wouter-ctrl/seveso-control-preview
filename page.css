@@ -106,9 +106,12 @@ body[data-world="grade"] .nav__brand .tm { color: var(--coral); }
 .film__poster { object-fit: cover; }
 /* .film__canvas is a <video> now (scroll-driven currentTime instead of a
    canvas + per-frame decode - see video-scrub.js). object-fit is set by
-   JS per breakpoint (VideoScrubber._applyTransform); background is the
-   page's own paper-white so there's never a color seam in any gap. */
-.film__canvas { object-fit: cover; background: #fcfdfd; }
+   JS per breakpoint (VideoScrubber._applyTransform). Background matches
+   the actual encoded frames' own paper-white exactly (sampled directly:
+   desktop #fdfdfd, mobile #ffffff - close to but not quite the page's
+   #fcfdfd) so there's no seam where the video's real content meets its
+   own letterbox/shrink-gap. */
+.film__canvas { object-fit: cover; background: #fdfdfd; }
 @media (min-width: 760px) {
   .film__poster {
     inset: auto; top: 55%; left: 74%;
@@ -292,7 +295,7 @@ section[data-band] { position: relative; }
 .media-card { border-radius: var(--radius-2xl); overflow: hidden; background: #fcfdfd; border: 1px solid var(--border); box-shadow: 0 24px 48px -28px hsl(233 30% 35% / .3); }
 .media-card video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .vinkjes-banner { aspect-ratio: 16 / 5.5; margin-bottom: 64px; position: relative; }
-.vinkjes-banner img, .vinkjes-banner video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #fcfdfd; }
+.vinkjes-banner img, .vinkjes-banner video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #fdfdfd; }
 .services-head { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 48px; align-items: center; margin-bottom: 56px; }
 .services-head .section-head { margin-bottom: 0; }
 .services-head .media-card { aspect-ratio: 16 / 9; }
@@ -470,6 +473,10 @@ section[data-band] { position: relative; }
      first paint doesn't jump when the canvas takes over. Centered: the
      film has its own zone now, no bottom text card to dodge. */
   .film__poster { object-fit: contain; object-position: 50% 50%; }
+  /* mobile film frames' own baked-in background is pure white, not the
+     #fdfdfd the desktop rendition uses - matched exactly, sampled from
+     the actual encoded frames rather than assumed. */
+  .film__canvas { background: #ffffff; }
   /* thumb-first: stacked, full-width tap targets - but full-width at the
      desktop button size reads oversized on a narrow phone, so trim it down */
   .chapter__ctas, .cta-final__btns { flex-direction: column; align-items: stretch; }
