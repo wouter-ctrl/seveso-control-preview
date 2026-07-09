@@ -37,7 +37,7 @@ body {
   font-family: var(--font);
   font-size: 16px; line-height: 1.5;
   color: var(--fg);
-  background: #fcfdfd; /* matches the film's paper-white ground */
+  background: #fdfdfd; /* matches the film frames' actual sampled background exactly (desktop rendition) */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -97,7 +97,7 @@ body[data-world="grade"] .nav__brand .tm { color: var(--coral); }
   position: sticky; top: 0;
   height: 100vh; height: 100svh;
   overflow: hidden;
-  background: #fcfdfd;
+  background: #fdfdfd;
 }
 .film__poster, .film__canvas {
   position: absolute; inset: 0;
@@ -428,11 +428,16 @@ section[data-band] { position: relative; }
   .nav .btn { min-height: 34px; padding: 7px 14px; font-size: 12.5px; }
   .nav__cta-full { display: none; }
   .nav__cta-short { display: inline; }
+  /* Mobile film frames' own background is pure white, not the #fdfdfd
+     desktop uses - the page bg has to match exactly here too, or the
+     video box's edge against the page is a visible seam (that's what
+     was still showing after only fixing the video element's own bg). */
+  body { background: #ffffff; }
   /* Stacked layout: text zone on top, film in its own zone below - no
      overlay, so text and image never fight for the same space. Stage
      shrunk to fit the two zones (was 100vh, way taller than 16:9 content
      needs - that's what read as "whitespace under the animation"). */
-  .film__stage { height: 88vh; height: 88svh; }
+  .film__stage { height: 88vh; height: 88svh; background: #ffffff; }
   .chapter { left: 6vw; width: 88vw; top: 5vh; bottom: auto; }
   .film__poster, .film__canvas {
     inset: auto; top: 52vh; left: 0; right: 0; bottom: auto;
